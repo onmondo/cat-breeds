@@ -1,3 +1,5 @@
+import { ReactNode } from "react"
+
 export type CatBreed = {
     id: string
     name: string
@@ -19,3 +21,7 @@ export interface CatImageDetails extends CatImage {
     width: number,
     height: number
 }
+
+export type AppContextProps = {
+    children: ReactNode
+};
