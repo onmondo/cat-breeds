@@ -1,16 +1,22 @@
 import React, { useEffect, useState, useContext } from "react";
 import Form from "react-bootstrap/Form";
 import { CatBreed } from "../lib/types"
-import { ChosenCatContext } from "../contexts/ChosenCatContextProvider" 
+import { useAppContext } from "../contexts/AppProvider" 
 import { fetchAPI } from "../util/fetchApi";
 
 export function BreedSelection() {
     const [breeds, setBreeds] = useState<CatBreed[]>([]);
-    const { chosenCat, updateChosenCat } = useContext(ChosenCatContext);
+    const [hasError, setHasError] = useState("")
+    const { state, updateChosenCat } = useAppContext();
 
     async function fetchBreeds() {
-        const data = await fetchAPI(`${process.env.CAT_API}/v1/breeds`);
-        setBreeds(data)
+        try {
+            const data = await fetchAPI(`${process.env.CAT_API}/v1/breeds`);
+            setBreeds(data)
+        } catch(error) {
+            setHasError("Apologies but we could not load new cats for you at this time! Miau!")
+        }
+
     }
     
     useEffect(() => {
@@ -28,7 +34,7 @@ export function BreedSelection() {
                 <Form.Select 
                     aria-label="Cat breeds" 
                     onChange={handleClick}
-                    value={(chosenCat != "") ? chosenCat : ""}
+                    value={(state.chosenCat != "") ? state.chosenCat : ""}
                 >
                     <option>Select breed</option>
                     {

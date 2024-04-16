@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Stack from "react-bootstrap/Stack";
-import { ChosenCatContext } from "../contexts/ChosenCatContextProvider";
+import { useAppContext } from "../contexts/AppProvider";
 import { BreedCardDetails } from "../components/BreedCardDetails";
 import { fetchAPI } from "../util/fetchApi";
 import { CatBreed, CatImageDetails } from "../lib/types";
@@ -12,17 +12,17 @@ import { BreedsRetrievalError } from "../errorHandlers/BreedSelection/BreedsRetr
 
 export function Details() {
     const params = useParams();
-    const { chosenCat } = useContext(ChosenCatContext);
+    const { state } = useAppContext();
     const [catDetails, setCatDetails] = useState<CatBreed>();
     const navigate = useNavigate();
     
     async function fetchDetails() {
-        const data = await fetchAPI(`${process.env.CAT_API}/v1/breeds/${chosenCat || params.id}`);
+        const data = await fetchAPI(`${process.env.CAT_API}/v1/breeds/${state.chosenCat || params.id}`);
         setCatDetails(data);
     }
 
     const handleClick = () => {
-        navigate(`/cat/${chosenCat || params.id}`); // Navigate to the specified route
+        navigate(`/cat/${state.chosenCat || params.id}`); // Navigate to the specified route
     };
 
     useEffect(() => {

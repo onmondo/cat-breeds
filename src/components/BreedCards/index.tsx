@@ -1,26 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { ChosenCatContext } from "../../contexts/ChosenCatContextProvider";
-import { CatBreedImage } from "../../lib/types";
 
+import { useAppContext } from "../../contexts/AppProvider";
+import { CatBreedImage } from "../../lib/types";
 import { fetchAPI } from "../../util/fetchApi";
 import { BreedCard } from "./BreedCard";
 import { uniqById } from "../../util/arrays";
-import { CardDeckContext } from "../../contexts/CardDeckContextProvider";
+import { BreedCardsProps } from "../../lib/typeProps";
 
-type BreedCardProps = {
-    page: number
-}
-
-export function BreedCards({ page }: BreedCardProps) {
+export const BreedCards: React.FC<BreedCardsProps> = ({ page }) => {
     const MIN_LIMIT = 4;
     const [images, setImages] = useState<CatBreedImage[]>([]);
-    const { chosenCat } = useContext(ChosenCatContext);
-    const { updateHasRemainingImages } = useContext(CardDeckContext);
+    const { state, updateHasImagesLeft } = useAppContext();
 
-    const apiURL = `${process.env.CAT_API}/v1/images/search?page=${page}&limit=${MIN_LIMIT}&breed_ids=${chosenCat}&api_key=${process.env.CAT_API_KEY}`;
+    const apiURL = `${process.env.CAT_API}/v1/images/search?page=${page}&limit=${MIN_LIMIT}&breed_ids=${state.chosenCat}&api_key=${process.env.CAT_API_KEY}`;
 
     async function fetchImages() {
         const data = await fetchAPI(apiURL);
@@ -33,19 +28,19 @@ export function BreedCards({ page }: BreedCardProps) {
         const limit = ((MIN_LIMIT * page) > 0)? MIN_LIMIT * page : MIN_LIMIT
         setImages(uniqueCatImages);
         if (uniqueCatImages.length < limit) {
-            updateHasRemainingImages(false)
+            updateHasImagesLeft(false)
         }
     }
 
     useEffect(() => {
         setImages([]);
-        if(chosenCat != "") {
+        if(state.chosenCat != "") {
             fetchImages();
         }
-    }, [chosenCat])
+    }, [state.chosenCat])
 
     useEffect(() => {
-        if(chosenCat != "") {
+        if(state.chosenCat != "") {
             fetchNextImages();
         }
     }, [page])

@@ -4,16 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { CatBreedImage } from "../../lib/types"
 import React, { useEffect, useState } from "react";
 import { BreedCardLoader } from "./BreedCardLoader";
+import { BreedCardProps } from "../../lib/typeProps";
 
-type BreedCardProps = {
-    image: CatBreedImage
-}
-
-export function BreedCard({ image }: BreedCardProps) {
+export const BreedCard: React.FC<BreedCardProps> = ({ image }) => {
     const navigate = useNavigate();
 
     function handleViewDetails(catImage: CatBreedImage) {
-        console.log("catImage.id", catImage.breeds[0].id, catImage.id);
         navigate(`/cat/${catImage.breeds[0].id}/image/${catImage.id}`)
     }
     

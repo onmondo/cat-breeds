@@ -4,28 +4,22 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { BreedSelection } from "../components/BreedSelection";
-import { ChosenCatContext } from "../contexts/ChosenCatContextProvider" 
+import { useAppContext } from "../contexts/AppProvider" 
 import { BreedCards } from "../components/BreedCards";
 import { Stack } from "react-bootstrap";
 import ErrorBoundary from "../errorHandlers/ErrorBoundary";
 import { BreedsRetrievalError } from "../errorHandlers/BreedSelection/BreedsRetrievalError";
-import { CardDeckContext } from "../contexts/CardDeckContextProvider";
 
 export function Home() {
     
-    const { chosenCat } = useContext(ChosenCatContext);
+    const { state, updateHasImagesLeft } = useAppContext();
     const [deckPage, setDeckPage] = useState(0);
-    const [loadMore, setLoadMore] = useState(true);
-    const { hasRemainingImages } = useContext(CardDeckContext);
+
     useEffect(() => {
         setDeckPage(0)
-    }, [chosenCat])
+        updateHasImagesLeft(true)
+    }, [state.chosenCat])
 
-    useEffect(() => {
-        setLoadMore(hasRemainingImages)
-    }, [hasRemainingImages])
-
-    console.log("loadMore", loadMore)
     return (
         <Container fluid="md">
             <Row>
@@ -44,8 +38,8 @@ export function Home() {
                         <div><BreedCards page={deckPage} /></div>
                         <div className="p-2">
                             <Button 
-                                style={{ display: loadMore ? "inline" : "none" }}
-                                disabled={(chosenCat == "")} 
+                                style={{ display: state.hasImagesLeft ? "inline" : "none" }}
+                                disabled={(state.chosenCat == "")} 
                                 variant="success"
                                 onClick={() => {
                                     const newPage = deckPage + 1
