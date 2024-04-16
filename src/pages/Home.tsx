@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import Stack from "react-bootstrap/Stack";
 import { BreedSelection } from "../components/BreedSelection";
 import { useAppContext } from "../contexts/AppProvider" 
 import { BreedCards } from "../components/BreedCards";
-import { Stack } from "react-bootstrap";
-import ErrorBoundary from "../errorHandlers/ErrorBoundary";
-import { BreedsRetrievalError } from "../errorHandlers/BreedSelection/BreedsRetrievalError";
+import { ApiErrorAlertBox } from "../components/ApiErrorAlertBox";
 
 export function Home() {
     
@@ -22,6 +21,13 @@ export function Home() {
 
     return (
         <Container fluid="md">
+            {
+                (state.hasAPIError) 
+                ?
+                <ApiErrorAlertBox />
+                :
+                <></>
+            }
             <Row>
                 <Col><h1 className="p-2">Cat Browser</h1></Col>
             </Row>

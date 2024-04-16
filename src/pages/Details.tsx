@@ -6,9 +6,9 @@ import Stack from "react-bootstrap/Stack";
 import { useAppContext } from "../contexts/AppProvider";
 import { BreedCardDetails } from "../components/BreedCardDetails";
 import { fetchAPI } from "../util/fetchApi";
-import { CatBreed, CatImageDetails } from "../lib/types";
+import { CatBreed } from "../lib/types";
 import ErrorBoundary from "../errorHandlers/ErrorBoundary";
-import { BreedsRetrievalError } from "../errorHandlers/BreedSelection/BreedsRetrievalError";
+import { ApiErrorAlertBox } from "../components/ApiErrorAlertBox";
 
 export function Details() {
     const params = useParams();
@@ -31,6 +31,13 @@ export function Details() {
 
     return (
         <Container fluid="md">
+            {
+                (state.hasAPIError) 
+                ?
+                <ApiErrorAlertBox />
+                :
+                <></>
+            }            
             <Stack gap={3}>
                 <div className="p-2">
                     <Button variant="primary" onClick={handleClick}>Back</Button>

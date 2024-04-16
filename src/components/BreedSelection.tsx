@@ -6,17 +6,15 @@ import { fetchAPI } from "../util/fetchApi";
 
 export function BreedSelection() {
     const [breeds, setBreeds] = useState<CatBreed[]>([]);
-    const [hasError, setHasError] = useState("")
-    const { state, updateChosenCat } = useAppContext();
+    const { state, updateChosenCat, updateHasAPIError } = useAppContext();
 
     async function fetchBreeds() {
         try {
             const data = await fetchAPI(`${process.env.CAT_API}/v1/breeds`);
             setBreeds(data)
         } catch(error) {
-            setHasError("Apologies but we could not load new cats for you at this time! Miau!")
+            updateHasAPIError(true)
         }
-
     }
     
     useEffect(() => {

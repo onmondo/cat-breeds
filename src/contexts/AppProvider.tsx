@@ -4,6 +4,7 @@ import { AppContextProps } from "../lib/types";
 interface AppState {
     chosenCat: string
     hasImagesLeft: boolean
+    hasAPIError: boolean
 }
 
 interface AppContextValue {
@@ -11,13 +12,19 @@ interface AppContextValue {
     setState: React.Dispatch<React.SetStateAction<AppState>>;
     updateChosenCat: (chosenCat: string) => void;
     updateHasImagesLeft: (hasImagesLeft: boolean) => void;
+    updateHasAPIError: (hasAPIError: boolean) => void
 }
 
 const AppContext = createContext<AppContextValue>({
-    state: { chosenCat: "", hasImagesLeft: true },
+    state: { 
+        chosenCat: "", 
+        hasImagesLeft: true,
+        hasAPIError: false
+    },
     setState: () => {},
     updateChosenCat: () => {},
-    updateHasImagesLeft: () => {}
+    updateHasImagesLeft: () => {},
+    updateHasAPIError: () => {}
 });
 
 export function useAppContext() {
@@ -26,7 +33,11 @@ export function useAppContext() {
 
 // Provides App level component context
 export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
-    const [state, setState] = useState<AppState>({ chosenCat: "", hasImagesLeft: true });
+    const [state, setState] = useState<AppState>({ 
+        chosenCat: "", 
+        hasImagesLeft: true,
+        hasAPIError: false
+    });
   
     const updateChosenCat = (chosenCat: string) => {
       setState({ ...state, chosenCat });
@@ -35,6 +46,10 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
     const updateHasImagesLeft = (hasImagesLeft: boolean) => {
         setState({ ...state, hasImagesLeft });
     }
+
+    const updateHasAPIError = (hasAPIError: boolean) => {
+        setState({ ...state, hasAPIError });
+    }
   
     // Value object that includes both state and update function
     const value: AppContextValue = {
@@ -42,6 +57,7 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
         setState,
         updateChosenCat,
         updateHasImagesLeft,
+        updateHasAPIError
     };
   
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

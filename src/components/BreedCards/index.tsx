@@ -1,35 +1,45 @@
 import React, { useEffect, useState } from "react";
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import { useAppContext } from "../../contexts/AppProvider";
-import { CatBreedImage } from "../../lib/types";
 import { fetchAPI } from "../../util/fetchApi";
-import { BreedCard } from "./BreedCard";
 import { uniqById } from "../../util/arrays";
+import { CatBreedImage } from "../../lib/types";
 import { BreedCardsProps } from "../../lib/typeProps";
+
+import { BreedCard } from "./BreedCard";
 
 export const BreedCards: React.FC<BreedCardsProps> = ({ page }) => {
     const MIN_LIMIT = 4;
     const [images, setImages] = useState<CatBreedImage[]>([]);
-    const { state, updateHasImagesLeft } = useAppContext();
-
+    const { state, updateHasImagesLeft, updateHasAPIError } = useAppContext();
     const apiURL = `${process.env.CAT_API}/v1/images/search?page=${page}&limit=${MIN_LIMIT}&breed_ids=${state.chosenCat}&api_key=${process.env.CAT_API_KEY}`;
 
     async function fetchImages() {
-        const data = await fetchAPI(apiURL);
-        setImages(data);
+        try {
+            const data = await fetchAPI(apiURL);
+            setImages(data);
+        } catch(error) {
+            updateHasAPIError(true)
+        }
     }
 
     async function fetchNextImages() {
-        const data = await fetchAPI(apiURL);
-        const uniqueCatImages = uniqById<CatBreedImage>(images, data);
-        const limit = ((MIN_LIMIT * page) > 0)? MIN_LIMIT * page : MIN_LIMIT
-        setImages(uniqueCatImages);
-        if (uniqueCatImages.length < limit) {
-            updateHasImagesLeft(false)
+        try {
+            const data = await fetchAPI(apiURL);
+            const uniqueCatImages = uniqById<CatBreedImage>(images, data);
+            const limit = ((MIN_LIMIT * page) > 0)? MIN_LIMIT * page : MIN_LIMIT
+            setImages(uniqueCatImages);
+            if (uniqueCatImages.length < limit) {
+                updateHasImagesLeft(false)
+            }
+        } catch(error) {
+            updateHasAPIError(true)
         }
+
     }
 
     useEffect(() => {
