@@ -1,33 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
-import Card from "react-bootstrap/Card";
-import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
+import Stack from "react-bootstrap/Stack";
 import { ChosenCatContext } from "../contexts/ChosenCatContextProvider";
+import { BreedCardDetails } from "../components/BreedCardDetails";
 import { fetchAPI } from "../util/fetchApi";
 import { CatBreed, CatImageDetails } from "../lib/types";
-import { useNavigate } from "react-router-dom";
-import { Stack } from "react-bootstrap";
+import ErrorBoundary from "../errorHandlers/ErrorBoundary";
+import { BreedsRetrievalError } from "../errorHandlers/BreedSelection/BreedsRetrievalError";
 
 export function Details() {
+    const { id } = useParams();
     const { chosenCat } = useContext(ChosenCatContext);
     const [catDetails, setCatDetails] = useState<CatBreed>();
     const [catImages, setCatImages] = useState<CatImageDetails[]>([]);
     const navigate = useNavigate();
     
     async function fetchDetails() {
-        const data = await fetchAPI(`${process.env.CAT_API}/v1/breeds/${chosenCat}`);
+        const data = await fetchAPI(`${process.env.CAT_API}/v1/breeds/${chosenCat || id}`);
         setCatDetails(data);
     }
 
     async function fetchImage() {
-        const data = await fetchAPI(`${process.env.CAT_API}/v1/images/search?breed_ids=${chosenCat}`);
-        console.log("image data", data);
+        const data = await fetchAPI(`${process.env.CAT_API}/v1/images/search?breed_ids=${chosenCat || id}`);
         setCatImages(data);
     }
 
     const handleClick = () => {
-        navigate(`/cat/${chosenCat}`); // Navigate to the specified route
+        navigate(`/cat/${chosenCat || id}`); // Navigate to the specified route
     };
 
     useEffect(() => {
@@ -42,22 +43,7 @@ export function Details() {
                     <Button variant="primary" onClick={handleClick}>Back</Button>
                 </div>
                 <div className="p-2">
-                    <Card>
-                        <Card.Img variant="top" src={catImages[0]?.url} />
-                        <Card.Body>
-                            <Card.Title>{catDetails?.name}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">{catDetails?.origin}</Card.Subtitle>
-                            <Card.Text>{catDetails?.temperament}</Card.Text>
-                            <blockquote className="blockquote mb-0">
-                            <p>
-                                {' '}{catDetails?.description}{' '}
-                            </p>
-                            {/* <footer className="blockquote-footer">
-                                Someone famous in <cite title="Source Title">Source Title</cite>
-                            </footer> */}
-                            </blockquote>
-                        </Card.Body>
-                    </Card>
+                    <BreedCardDetails catImages={catImages} catDetails={catDetails} />
                 </div>
             </Stack>
         </Container>

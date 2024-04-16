@@ -21,13 +21,15 @@ export function BreedSelection() {
         updateChosenCat(event.target.value);
     }
 
+    console.log("chosenCat", chosenCat);
     return (
         <Form>
             <Form.Group>
                 <Form.Label>Breed</Form.Label>
                 <Form.Select 
                     aria-label="Cat breeds" 
-                    onClick={handleClick}
+                    onChange={handleClick}
+                    value={(chosenCat != "") ? chosenCat : ""}
                 >
                     <option>Select breed</option>
                     {

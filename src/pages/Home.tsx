@@ -11,8 +11,15 @@ import ErrorBoundary from "../errorHandlers/ErrorBoundary";
 import { BreedsRetrievalError } from "../errorHandlers/BreedSelection/BreedsRetrievalError";
 
 export function Home() {
+    const MIN_LIMIT = 4;
     const { chosenCat } = useContext(ChosenCatContext);
-    // useEffect(() =>)
+    const [cardLimit, setCardLimit] = useState(MIN_LIMIT);
+
+    useEffect(() => {
+        setCardLimit(MIN_LIMIT)
+    }, [chosenCat])
+
+    console.log("cardLimit", cardLimit);
     return (
         <Container fluid="md">
             <Row>
@@ -21,18 +28,25 @@ export function Home() {
             <Row>
                 <Col lg={3} md={4} sm={12} xs={12}>
                     <div className="p-2">
-                        <ErrorBoundary fallback={<BreedsRetrievalError />}>
-                            <BreedSelection />
-                        </ErrorBoundary>
+                        <BreedSelection />
                     </div>
                 </Col>
             </Row>
             <Row>
                 <Col>
                     <Stack>
-                        <div><BreedCards /></div>
+                        <div><BreedCards limit={cardLimit} /></div>
                         <div className="p-2">
-                            <Button disabled={(chosenCat == "")} variant="success">Load more</Button>
+                            <Button 
+                                disabled={(chosenCat == "")} 
+                                variant="success"
+                                onClick={() => {
+                                    const newLimit = cardLimit + 1
+                                    setCardLimit(newLimit)
+                                }}
+                            >
+                                    Load more
+                                </Button>
                         </div>
                     </Stack>
                 </Col>
