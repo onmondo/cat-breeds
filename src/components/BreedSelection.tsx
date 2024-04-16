@@ -21,7 +21,6 @@ export function BreedSelection() {
         updateChosenCat(event.target.value);
     }
 
-    console.log("chosenCat", chosenCat);
     return (
         <Form>
             <Form.Group>

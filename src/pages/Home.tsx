@@ -9,17 +9,23 @@ import { BreedCards } from "../components/BreedCards";
 import { Stack } from "react-bootstrap";
 import ErrorBoundary from "../errorHandlers/ErrorBoundary";
 import { BreedsRetrievalError } from "../errorHandlers/BreedSelection/BreedsRetrievalError";
+import { CardDeckContext } from "../contexts/CardDeckContextProvider";
 
 export function Home() {
-    const MIN_LIMIT = 4;
+    
     const { chosenCat } = useContext(ChosenCatContext);
-    const [cardLimit, setCardLimit] = useState(MIN_LIMIT);
-
+    const [deckPage, setDeckPage] = useState(0);
+    const [loadMore, setLoadMore] = useState(true);
+    const { hasRemainingImages } = useContext(CardDeckContext);
     useEffect(() => {
-        setCardLimit(MIN_LIMIT)
+        setDeckPage(0)
     }, [chosenCat])
 
-    console.log("cardLimit", cardLimit);
+    useEffect(() => {
+        setLoadMore(hasRemainingImages)
+    }, [hasRemainingImages])
+
+    console.log("loadMore", loadMore)
     return (
         <Container fluid="md">
             <Row>
@@ -35,14 +41,15 @@ export function Home() {
             <Row>
                 <Col>
                     <Stack>
-                        <div><BreedCards limit={cardLimit} /></div>
+                        <div><BreedCards page={deckPage} /></div>
                         <div className="p-2">
                             <Button 
+                                style={{ display: loadMore ? "inline" : "none" }}
                                 disabled={(chosenCat == "")} 
                                 variant="success"
                                 onClick={() => {
-                                    const newLimit = cardLimit + 1
-                                    setCardLimit(newLimit)
+                                    const newPage = deckPage + 1
+                                    setDeckPage(newPage)
                                 }}
                             >
                                     Load more

@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
-import { CatImageDetails, CatBreed } from "../lib/types";
-import { BreedCardDetailsLoader } from "./BreedCardDetailsLoader";
+import { CatImageDetails, CatBreed } from "../../lib/types";
+import { BreedCardDetailsLoader } from "./loader";
+import { fetchAPI } from "../../util/fetchApi";
 
 type BreedCardDetailsProps = {
-    catImages: CatImageDetails[],
+    imageId: string,
     catDetails?: CatBreed
 }
 
-export function BreedCardDetails({ catImages, catDetails}: BreedCardDetailsProps) {
-    const firstImage = catImages[0];
+export function BreedCardDetails({ imageId, catDetails }: BreedCardDetailsProps) {
 
     const [catImageLoaded, setCatImageLoaded] = useState(false);
+    const [catImage, setCatImage] = useState<CatImageDetails>();
+
+    async function fetchImage(imageId: string) {
+        const data = await fetchAPI(`${process.env.CAT_API}/v1/images/${imageId}`);
+        setCatImage(data);
+    }
+
+    useEffect(() => {
+        fetchImage(imageId);
+    }, [])
 
     useEffect(() => {
         const img = new Image();
@@ -19,14 +29,14 @@ export function BreedCardDetails({ catImages, catDetails}: BreedCardDetailsProps
         img.onload = () => {
             setCatImageLoaded(true)
         }
-        img.src = firstImage?.url
-    }, [firstImage?.url])
+        img.src = catImage?.url || ""
+    }, [catImage?.url])
 
     return (
         (catImageLoaded) 
         ?
         <Card>
-            <Card.Img variant="top" src={firstImage?.url} />
+            <Card.Img variant="top" src={catImage?.url} />
             <Card.Body>
                 <Card.Title>{catDetails?.name}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{catDetails?.origin}</Card.Subtitle>
