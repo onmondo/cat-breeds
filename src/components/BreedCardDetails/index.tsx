@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
+
 import { useAppContext } from "../../contexts/AppProvider" 
-import { CatImageDetails } from "../../lib/types";
-import { BreedCardDetailsLoader } from "./loader";
 import { fetchAPI } from "../../util/fetchApi";
+import { CatImageDetails } from "../../lib/types";
 import { BreedCardDetailsProps } from "../../lib/typeProps";
+
+import { BreedCardDetailsLoader } from "./loader";
 
 export const BreedCardDetails: React.FC<BreedCardDetailsProps> = ({ imageId, catDetails }) => {
     const { updateHasAPIError } = useAppContext();

@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
+
 import { CatBreed } from "../lib/types"
 import { useAppContext } from "../contexts/AppProvider" 
 import { fetchAPI } from "../util/fetchApi";

@@ -1,10 +1,12 @@
+import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card"
 import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom";
+
 import { CatBreedImage } from "../../lib/types"
-import React, { useEffect, useState } from "react";
-import { BreedCardLoader } from "./BreedCardLoader";
 import { BreedCardProps } from "../../lib/typeProps";
+
+import { BreedCardLoader } from "./BreedCardLoader";
 
 export const BreedCard: React.FC<BreedCardProps> = ({ image }) => {
     const navigate = useNavigate();

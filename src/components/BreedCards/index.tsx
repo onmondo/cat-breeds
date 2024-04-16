@@ -39,7 +39,6 @@ export const BreedCards: React.FC<BreedCardsProps> = ({ page }) => {
         } catch(error) {
             updateHasAPIError(true)
         }
-
     }
 
     useEffect(() => {

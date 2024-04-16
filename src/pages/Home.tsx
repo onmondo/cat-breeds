@@ -21,18 +21,12 @@ export function Home() {
 
     return (
         <Container fluid="md">
-            {
-                (state.hasAPIError) 
-                ?
-                <ApiErrorAlertBox />
-                :
-                <></>
-            }
+            <ApiErrorAlertBox show={state.hasAPIError} />
             <Row>
                 <Col><h1 className="p-2">Cat Browser</h1></Col>
             </Row>
             <Row>
-                <Col lg={3} md={4} sm={12} xs={12}>
+                <Col lg={4} md={6} sm={6} xs={12}>
                     <div className="p-2">
                         <BreedSelection />
                     </div>

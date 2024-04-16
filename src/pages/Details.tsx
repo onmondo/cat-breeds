@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
@@ -31,13 +31,7 @@ export function Details() {
 
     return (
         <Container fluid="md">
-            {
-                (state.hasAPIError) 
-                ?
-                <ApiErrorAlertBox />
-                :
-                <></>
-            }            
+            <ApiErrorAlertBox show={state.hasAPIError} />           
             <Stack gap={3}>
                 <div className="p-2">
                     <Button variant="primary" onClick={handleClick}>Back</Button>
