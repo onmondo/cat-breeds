@@ -4,21 +4,25 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Stack from "react-bootstrap/Stack";
 import { useAppContext } from "../contexts/AppProvider";
-import { BreedCardDetails } from "../components/BreedCardDetails";
+
 import { fetchAPI } from "../util/fetchApi";
 import { CatBreed } from "../lib/types";
-import ErrorBoundary from "../errorHandlers/ErrorBoundary";
 import { ApiErrorAlertBox } from "../components/ApiErrorAlertBox";
+import { BreedCardDetails } from "../components/BreedCardDetails";
 
 export function Details() {
     const params = useParams();
-    const { state } = useAppContext();
+    const { state, updateHasAPIError } = useAppContext();
     const [catDetails, setCatDetails] = useState<CatBreed>();
     const navigate = useNavigate();
     
     async function fetchDetails() {
-        const data = await fetchAPI(`${process.env.CAT_API}/v1/breeds/${state.chosenCat || params.id}`);
-        setCatDetails(data);
+        try {
+            const data = await fetchAPI(`${process.env.CAT_API}/v1/breeds/${state.chosenCat || params.id}`);
+            setCatDetails(data);
+        } catch(error) {
+            updateHasAPIError(true)
+        }
     }
 
     const handleClick = () => {
@@ -37,12 +41,10 @@ export function Details() {
                     <Button variant="primary" onClick={handleClick}>Back</Button>
                 </div>
                 <div className="p-2">
-                    <ErrorBoundary>
-                        <BreedCardDetails 
-                            imageId={params.imageId || ""} 
-                            catDetails={catDetails} 
-                        />
-                    </ErrorBoundary>
+                    <BreedCardDetails 
+                        imageId={params.imageId || ""} 
+                        catDetails={catDetails} 
+                    />
                 </div>
             </Stack>
         </Container>

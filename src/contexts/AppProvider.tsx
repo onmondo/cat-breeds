@@ -40,7 +40,7 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
     });
   
     const updateChosenCat = (chosenCat: string) => {
-      setState({ ...state, chosenCat });
+        setState({ ...state, chosenCat });
     };
 
     const updateHasImagesLeft = (hasImagesLeft: boolean) => {

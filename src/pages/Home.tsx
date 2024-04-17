@@ -4,8 +4,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Stack from "react-bootstrap/Stack";
-import { BreedSelection } from "../components/BreedSelection";
+
 import { useAppContext } from "../contexts/AppProvider" 
+import { BreedSelection } from "../components/BreedSelection";
 import { BreedCards } from "../components/BreedCards";
 import { ApiErrorAlertBox } from "../components/ApiErrorAlertBox";
 
@@ -23,7 +24,7 @@ export function Home() {
         <Container fluid="md">
             <ApiErrorAlertBox show={state.hasAPIError} />
             <Row>
-                <Col><h1 className="p-2">Cat Browser</h1></Col>
+                <Col><h1 className="p-2">Cat Breeds</h1></Col>
             </Row>
             <Row>
                 <Col lg={4} md={6} sm={6} xs={12}>
