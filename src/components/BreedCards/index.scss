@@ -1,0 +1,22 @@
+#catimages {
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: center;
+
+    .catbreeds {
+        width: 16rem;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    #catimages {
+        height: auto !important;
+        .catbreeds {
+            width: 25rem;
+        }
+    }
+    
+}

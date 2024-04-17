@@ -11,14 +11,52 @@ import { ApiErrorAlertBox } from "../components/ApiErrorAlertBox";
 
 export function Home() {
     
-    const { state, updateHasImagesLeft } = useAppContext();
+    const { 
+        state, 
+        updateHasImagesLeft, 
+        updateDeckHeight 
+    } = useAppContext();
+
     const [deckPage, setDeckPage] = useState(0);
+
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    // const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    //   setWindowHeight(window.innerHeight);
+    };
+
+    const computeAdditionalHeight = () =>{
+        if (windowWidth >= 1200) {
+            return 8;
+        } else if (windowWidth >= 1140) {
+            return 12;
+        } else if (windowWidth >= 960) {
+            return 16;
+        } else if (windowWidth >= 768) {
+            return 20;
+        }
+        return 16;
+    }
+  
+    useEffect(() => {
+      // Add event listener when component mounts
+      window.addEventListener('resize', handleResize);
+  
+      // Remove event listener when component unmounts
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []); 
 
     useEffect(() => {
         setDeckPage(0)
         updateHasImagesLeft(true)
     }, [state.chosenCat])
 
+    console.log("state", state)
+    console.log("windowWidth", windowWidth)
     return (
         <Container fluid="md">
             <ApiErrorAlertBox show={state.hasAPIError} />
@@ -42,12 +80,14 @@ export function Home() {
                                 disabled={(state.chosenCat == "")} 
                                 variant="success"
                                 onClick={() => {
-                                    const newPage = deckPage + 1
-                                    setDeckPage(newPage)
+                                    const newPage = deckPage + 1;
+                                    setDeckPage(newPage);
+                                    const newDeckHeight = state.deckHeight + computeAdditionalHeight();
+                                    updateDeckHeight(newDeckHeight);
                                 }}
                             >
                                     Load more
-                                </Button>
+                            </Button>
                         </div>
                     </Stack>
                 </Col>

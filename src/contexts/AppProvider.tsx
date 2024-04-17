@@ -5,6 +5,7 @@ interface AppState {
     chosenCat: string
     hasImagesLeft: boolean
     hasAPIError: boolean
+    deckHeight: number
 }
 
 interface AppContextValue {
@@ -12,19 +13,22 @@ interface AppContextValue {
     setState: React.Dispatch<React.SetStateAction<AppState>>;
     updateChosenCat: (chosenCat: string) => void;
     updateHasImagesLeft: (hasImagesLeft: boolean) => void;
-    updateHasAPIError: (hasAPIError: boolean) => void
+    updateHasAPIError: (hasAPIError: boolean) => void;
+    updateDeckHeight: (deckHeight: number) => void
 }
 
-const AppContext = createContext<AppContextValue>({
+const AppContext: React.Context<AppContextValue> = createContext<AppContextValue>({
     state: { 
         chosenCat: "", 
         hasImagesLeft: true,
-        hasAPIError: false
+        hasAPIError: false,
+        deckHeight: 0
     },
     setState: () => {},
     updateChosenCat: () => {},
     updateHasImagesLeft: () => {},
-    updateHasAPIError: () => {}
+    updateHasAPIError: () => {},
+    updateDeckHeight: () => {}
 });
 
 export function useAppContext() {
@@ -36,7 +40,8 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
     const [state, setState] = useState<AppState>({ 
         chosenCat: "", 
         hasImagesLeft: true,
-        hasAPIError: false
+        hasAPIError: false,
+        deckHeight: 0
     });
   
     const updateChosenCat = (chosenCat: string) => {
@@ -50,6 +55,10 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
     const updateHasAPIError = (hasAPIError: boolean) => {
         setState({ ...state, hasAPIError });
     }
+
+    const updateDeckHeight = (deckHeight: number) => {
+        setState({ ...state, deckHeight });
+    }
   
     // Value object that includes both state and update function
     const value: AppContextValue = {
@@ -57,7 +66,8 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
         setState,
         updateChosenCat,
         updateHasImagesLeft,
-        updateHasAPIError
+        updateHasAPIError,
+        updateDeckHeight
     };
   
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
