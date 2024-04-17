@@ -1,0 +1,21 @@
+#catimages {
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 0.5rem;
+
+    .catbreeds {
+        width: 16rem;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    #catimages {
+        .catbreeds {
+            width: 25rem;
+        }
+    }
+    
+}

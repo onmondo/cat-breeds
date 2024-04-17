@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-
 import { useAppContext } from "../../contexts/AppProvider";
 import { fetchAPI } from "../../util/fetchApi";
 import { uniqById } from "../../util/arrays";
@@ -11,6 +7,7 @@ import { CatBreedImage } from "../../lib/types";
 import { BreedCardsProps } from "../../lib/typeProps";
 
 import { BreedCard } from "./BreedCard";
+import "./index.scss"
 
 export const BreedCards: React.FC<BreedCardsProps> = ({ page }) => {
     const MIN_LIMIT = 4;
@@ -55,14 +52,12 @@ export const BreedCards: React.FC<BreedCardsProps> = ({ page }) => {
     }, [page])
 
     return (
-        <Container>
-            <Row>
-                {images.map((image) => 
-                <Col key={image.id}>
-                    <BreedCard image={image} />
-                </Col>
-                )}
-            </Row>
-        </Container>
+        <section id="catimages">
+            {images.map((image) => 
+            <div key={image.id}>
+                <BreedCard image={image} />
+            </div>
+            )}
+        </section>
     )
 }

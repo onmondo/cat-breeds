@@ -29,7 +29,7 @@ export const BreedCard: React.FC<BreedCardProps> = ({ image }) => {
     return (
         (catImageLoaded) 
         ?
-        <Card className="text-center" style={{ width: '16rem' }}>
+        <Card className="catbreeds text-center">
             <Card.Img variant="top" src={image.url} />
             <Card.Body>
                 <Button 
