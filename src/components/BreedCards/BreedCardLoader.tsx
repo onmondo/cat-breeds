@@ -7,7 +7,7 @@ import ImageLoader from "../ImageLoader";
 
 export function BreedCardLoader() {
     return (
-        <Card className="text-center" style={{ width: '16rem'}}>
+        <Card className="catbreeds text-center">
             <Card.Header>
                 <ImageLoader />
             </Card.Header>
