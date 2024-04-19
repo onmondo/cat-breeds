@@ -7,7 +7,6 @@ import { CatBreedImage } from "../../lib/types";
 import { BreedCardsProps } from "../../lib/typeProps";
 
 import { BreedCard } from "./BreedCard";
-import "./index.scss"
 
 export const BreedCards: React.FC<BreedCardsProps> = ({ page }) => {
     const MIN_LIMIT = 4;

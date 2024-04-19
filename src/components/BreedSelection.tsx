@@ -29,7 +29,7 @@ export function BreedSelection() {
     return (
         <Form>
             <Form.Group>
-                <Form.Label>Breed</Form.Label>
+                {/* <Form.Label>Breed</Form.Label> */}
                 <Form.Select 
                     aria-label="Cat breeds" 
                     onChange={handleClick}
